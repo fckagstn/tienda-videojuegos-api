@@ -5,7 +5,7 @@ from tienda.modelos_mapeados import Usuario
 from tienda.esquemas import UsuarioEntrada, UsuarioSalida, LoginEntrada
 from sqlalchemy.exc import IntegrityError
 from psycopg.errors import UniqueViolation
-from tienda.seguridad import hashear_contrasena, verificar_contrasena, crear_token, dummy_hash
+from tienda.seguridad import hashear_contrasena, verificar_contrasena, crear_token, hash_senuelo
 
 router = APIRouter()
 
@@ -34,7 +34,7 @@ def autenticar_login(datos_login: LoginEntrada, session = Depends(obtener_sesion
     objeto_usuario = session.scalars(consulta).first()
 
     if objeto_usuario is None:
-        validacion_senuelo = verificar_contrasena(datos_login.contrasena, dummy_hash)
+        verificar_contrasena(datos_login.contrasena, hash_senuelo)
         raise HTTPException(
             status_code=401,
             detail="Credenciales incorrectas",

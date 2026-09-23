@@ -13,7 +13,7 @@ def hashear_contrasena(contrasena):
     contrasena_hashed = bcrypt.hashpw(contrasena_byte, sal)
     return contrasena_hashed.decode()
 
-dummy_hash = hashear_contrasena(texto_senuelo)
+hash_senuelo = hashear_contrasena(texto_senuelo)
 
 def verificar_contrasena(contrasena, hash_guardado):
     contrasena_byte = contrasena.encode()
