@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy import select
 from tienda.dependencias import obtener_usuario, obtener_sesion
 from tienda.modelos_mapeados import Producto
@@ -15,7 +15,7 @@ def devolver_productos(session = Depends(obtener_sesion)):
     return resultados
 
 @router.get("/{id}", response_model=ProductoSalida)
-def devolver_producto(id: int, session = Depends(obtener_sesion)):
+def devolver_producto(id: int = Path(ge=1), session = Depends(obtener_sesion)):
     objeto = session.get(Producto, id)
     if objeto is None:
         raise HTTPException(status_code=404, detail="No existe el producto que buscas")

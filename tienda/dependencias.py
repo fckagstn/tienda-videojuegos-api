@@ -18,7 +18,7 @@ def obtener_usuario(authorization: str | None = Header(None), session = Depends(
 
     partes = authorization.split(" ")
 
-    if len(partes) != 2 or partes[0] != "Bearer":
+    if len(partes) != 2 or partes[0].lower() != "bearer":
         raise HTTPException(
             status_code=401, 
             detail="Formato de token inválido. Use 'Bearer <token>'", 
@@ -28,7 +28,7 @@ def obtener_usuario(authorization: str | None = Header(None), session = Depends(
     token = partes[1]
 
     try:
-        id = leer_token(token)
+        id_usuario = leer_token(token)
 
     except jwt.ExpiredSignatureError:
         raise HTTPException(
@@ -44,7 +44,7 @@ def obtener_usuario(authorization: str | None = Header(None), session = Depends(
             headers={"WWW-Authenticate": "Bearer"}
         )
 
-    objeto_usuario = session.get(Usuario, id)
+    objeto_usuario = session.get(Usuario, id_usuario)
     if objeto_usuario is None:
         raise HTTPException(
             status_code=401, 
