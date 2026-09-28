@@ -40,3 +40,33 @@ def test_agregar_producto_nuevo_responde_201():
 
     respuesta_post = cliente.post("/productos", headers={"Authorization": f"Bearer {token}"}, json={"nombre": "Consola N64", "precio_centavos": 9000, "categoria": "Accesorio"})
     assert respuesta_post.status_code == 201
+
+def test_actualizar_producto_put_por_id_negativo_responde_422():
+    respuesta_login = cliente.post("/login", json={"correo": correo, "contrasena": contrasena})
+    datos_respuesta = respuesta_login.json()
+    token = datos_respuesta["access_token"]
+
+    respuesta_put = cliente.put("/productos/-1", headers={"Authorization": f"Bearer {token}"}, json={"nombre": "Consola Gamecube", "precio_centavos": 9000, "categoria": "Accesorio"})
+    assert respuesta_put.status_code == 422
+
+def test_actualizar_producto_patch_por_id_negativo_responde_422():
+    respuesta_login = cliente.post("/login", json={"correo": correo, "contrasena": contrasena})
+    datos_respuesta = respuesta_login.json()
+    token = datos_respuesta["access_token"]
+
+    respuesta_patch = cliente.patch("/productos/-1", headers={"Authorization": f"Bearer {token}"}, json={"nombre": "Consola PS1"})
+    assert respuesta_patch.status_code == 422
+
+def test_borrar_producto_por_id_negativo_responde_422():
+    respuesta_login = cliente.post("/login", json={"correo": correo, "contrasena": contrasena})
+    datos_respuesta = respuesta_login.json()
+    token = datos_respuesta["access_token"]
+
+    respuesta_put = cliente.delete("/productos/-1", headers={"Authorization": f"Bearer {token}"})
+    assert respuesta_put.status_code == 422
+
+def test_obtener_producto_por_id_devuelve_cuerpo_id_1():
+    respuesta = cliente.get("/productos/1")
+    datos_respuesta = respuesta.json()
+    id_producto = datos_respuesta["id"]
+    assert id_producto == 1

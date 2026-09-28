@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, String
 from tienda.configuracion import db_user, db_password, db_port
 
 # Creamos el engine que contendrá nuestra conexión a PosgreSQL
-engine = create_engine(f"postgresql+psycopg://{db_user}:{db_password}@localhost:{db_port}/tienda", echo=True)
+engine = create_engine(f"postgresql+psycopg://{db_user}:{db_password}@localhost:{db_port}/tienda", echo=False)
 
 class Base(DeclarativeBase):
     pass

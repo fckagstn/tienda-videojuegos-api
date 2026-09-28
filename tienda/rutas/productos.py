@@ -14,9 +14,9 @@ def devolver_productos(session = Depends(obtener_sesion)):
     resultados = objetos.all()
     return resultados
 
-@router.get("/{id}", response_model=ProductoSalida)
-def devolver_producto(id: int = Path(ge=1), session = Depends(obtener_sesion)):
-    objeto = session.get(Producto, id)
+@router.get("/{id_producto}", response_model=ProductoSalida)
+def devolver_producto(id_producto: int = Path(ge=1), session = Depends(obtener_sesion)):
+    objeto = session.get(Producto, id_producto)
     if objeto is None:
         raise HTTPException(status_code=404, detail="No existe el producto que buscas")
     return objeto
@@ -37,9 +37,9 @@ def agregar_producto_nuevo(producto: ProductoEntrada, usuario = Depends(obtener_
    
     return producto_nuevo
     
-@router.put("/{id}", response_model=ProductoSalida)
-def actualizar_producto(id: int, producto: ProductoEntrada, usuario = Depends(obtener_usuario), session = Depends(obtener_sesion)):
-    objeto = session.get(Producto, id)
+@router.put("/{id_producto}", response_model=ProductoSalida)
+def actualizar_producto(producto: ProductoEntrada, id_producto: int = Path(ge=1), usuario = Depends(obtener_usuario), session = Depends(obtener_sesion)):
+    objeto = session.get(Producto, id_producto)
     if objeto is None:
         raise HTTPException(status_code=404, detail="No existe el producto que buscas")
     
@@ -58,9 +58,9 @@ def actualizar_producto(id: int, producto: ProductoEntrada, usuario = Depends(ob
 
     return objeto 
     
-@router.patch("/{id}", response_model=ProductoSalida)
-def actualizar_elemento_especifico_producto(producto: ProductoParche, id: int, usuario = Depends(obtener_usuario), session = Depends(obtener_sesion)):
-    objeto = session.get(Producto, id)
+@router.patch("/{id_producto}", response_model=ProductoSalida)
+def actualizar_elemento_especifico_producto(producto: ProductoParche, id_producto: int = Path(ge=1), usuario = Depends(obtener_usuario), session = Depends(obtener_sesion)):
+    objeto = session.get(Producto, id_producto)
     if objeto is None:
         raise HTTPException(status_code=404, detail="No existe el producto que buscas")
     
@@ -82,10 +82,10 @@ def actualizar_elemento_especifico_producto(producto: ProductoParche, id: int, u
 
     return objeto
 
-@router.delete("/{id}", status_code=204)
-def borrar_producto(id: int, usuario = Depends(obtener_usuario),session = Depends(obtener_sesion)):
+@router.delete("/{id_producto}", status_code=204)
+def borrar_producto(id_producto: int = Path(ge=1), usuario = Depends(obtener_usuario),session = Depends(obtener_sesion)):
     
-    objeto = session.get(Producto, id)
+    objeto = session.get(Producto, id_producto)
     if objeto is None:
         raise HTTPException(status_code=404, detail="No existe el id que intentas eliminar")
         
