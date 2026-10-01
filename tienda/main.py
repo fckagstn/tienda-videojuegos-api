@@ -8,7 +8,8 @@ import uuid
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    force=True
 )
 
 logger = logging.getLogger(__name__)
@@ -28,7 +29,7 @@ def manejar_validacion(request, exc):
 @app.exception_handler(Exception)
 def manejar_error_server(request, exc):
     clave = str(uuid.uuid4())
-    logger.error("Ocurrio un error interno en el servidor: con la clave %s", clave, exc_info=True)
+    logger.error("Ocurrio un error interno en el servidor: con la clave %s", clave, exc_info=exc)
     return JSONResponse(status_code=500, content={
         "detail": "Ocurrio un error interno en el servidor. Trabajaremos para mejorar el sistema.",
         "id_error": clave
